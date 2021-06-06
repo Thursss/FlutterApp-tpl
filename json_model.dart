@@ -10,16 +10,16 @@ String tpl = '''
 import 'package:json_annotation/json_annotation.dart';
 
 %t
-part '%s.g.dart';
+part '%f.g.dart';
 
 /// 生成Model类
 @JsonSerializable()
-class %s {
-    %s();
+class %n {
+    %n();
 
-    %n
-    factory %s.fromJson(Map<String,dynamic> json) => _\$%sFromJson(json);
-    Map<String, dynamic> toJson() => _\$%sToJson(this);
+    %a
+    factory %n.fromJson(Map<String,dynamic> json) => _\$%nFromJson(json);
+    Map<String, dynamic> toJson() => _\$%nToJson(this);
 }\n
 ''';
 
@@ -161,15 +161,20 @@ void walk(String srcDir, String distDir, String tpl, {String tag = '\$'}) {
 
     (jsonData as Map<String, dynamic>).forEach((key, val) {
       if (key == '') return;
-      if (builtInDartWord.contains(key)) key = '${key}_';
+      if (builtInDartWord.contains(key)) {
+        attrs.write("@JsonKey(name: '$key')\r\n    ");
+        key = '${key}_';
+      }
+
       attrs.write('${getType(val, importSet, fileName, tag)} $key;\r\n    ');
     });
 
     /// 输出文件内容
     String distFilaData = format(tpl, {
-      '%s': changeFirstChar(fileName),
+      '%f': fileName,
+      '%n': changeFirstChar(fileName),
       '%t': importSet.join(''),
-      '%n': attrs.toString(),
+      '%a': attrs.toString(),
     });
 
     /// 输出路径

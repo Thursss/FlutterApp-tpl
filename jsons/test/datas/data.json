@@ -1,18 +1,6 @@
 {
     "name": "John Smith",
     "email": "john@example.com",
-    "mother": {
-        "name": "Alice",
-        "email": "alice@example.com"
-    },
-    "friends": [
-        {
-            "name": "Jack",
-            "email": "Jack@example.com"
-        },
-        {
-            "name": "Nancy",
-            "email": "Nancy@example.com"
-        }
-    ]
+    "mother": "$../user",
+    "friends": "$[]../user"
 }

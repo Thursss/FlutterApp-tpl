@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:path/path.dart' as Path;
 
+RegExp expChian = new RegExp(r".*[\u4e00-\u9fa5]+.*$");
+RegExp expNum = new RegExp(r"^\d");
 String srcDir = './jsons';
 String distDir = './lib/models';
 String distDirTpl = './modelsTpl';
@@ -170,6 +172,17 @@ void walk(String srcDir, String distDir, String tpl, {String tag = '\$'}) {
       if (builtInDartWord.contains(key)) {
         attrs.write("@JsonKey(name: '$key')\r\n    ");
         key = '${key}_';
+      }
+      print('$key  ${expChian.hasMatch(key)}');
+      print('$key  ${expNum.hasMatch(key)}');
+      if (expChian.hasMatch(key)) {
+        attrs.write("@JsonKey(name: '$key')\r\n    ");
+        key = '${key}_';
+      }
+
+      if (expNum.hasMatch(key) && !expChian.hasMatch(key)) {
+        attrs.write("@JsonKey(name: '$key')\r\n    ");
+        key = '$fileName$key';
       }
 
       attrs.write('${getType(val, importSet, fileName, tag)} $key;\r\n    ');

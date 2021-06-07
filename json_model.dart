@@ -7,6 +7,7 @@ String distDir = './lib/models';
 String distDirTpl = './modelsTpl';
 String tag = '\$';
 String tpl = '''
+import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 
 %t
@@ -18,7 +19,12 @@ class %n {
     %n();
 
     %a
+    factory %n.fromRawJson(String str) => %n.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
     factory %n.fromJson(Map<String,dynamic> json) => _\$%nFromJson(json);
+
     Map<String, dynamic> toJson() => _\$%nToJson(this);
 }\n
 ''';

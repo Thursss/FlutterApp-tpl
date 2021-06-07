@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'user.dart';
@@ -43,6 +44,8 @@ class Test {
     List<Data> ListData;
     User customize_;
     
+    factory Test.fromRawJson(String str) => Test.fromJson(json.decode(str));
+    String toRawJson() => json.encode(toJson());
     factory Test.fromJson(Map<String,dynamic> json) => _$TestFromJson(json);
     Map<String, dynamic> toJson() => _$TestToJson(this);
 }

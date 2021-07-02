@@ -4,24 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import './search_input.dart';
 
-/*
- * app顶部搜索条
- */
-
-class YKSearchBar extends StatefulWidget {
-  final String hintText;
-  final Color color;
-  final Color inputFillColor;
-  final bool isDelay;
-  final int durationTime;
-  final Widget leading;
-  final List<Widget> actions;
-  final Function onChang;
-  final Function onClear;
-  final Function onTap;
-
-  /// 顶部搜索条
-  const YKSearchBar({
+/// app顶部搜索条
+class SearchBar extends StatefulWidget {
+  /// app顶部搜索条
+  const SearchBar({
     Key key,
     this.hintText,
     this.color,
@@ -35,11 +21,41 @@ class YKSearchBar extends StatefulWidget {
     this.onTap,
   }) : super(key: key);
 
+  /// 提示文本
+  final String hintText;
+
+  /// 布局样式
+  final Color color;
+
+  /// 输入框布局颜色
+  final Color inputFillColor;
+
+  /// 是否启用节流
+  final bool isDelay;
+
+  /// 节流时间，默认200毫秒
+  final int durationTime;
+
+  /// 左边组件
+  final Widget leading;
+
+  /// 右边组件
+  final List<Widget> actions;
+
+  /// 点击组件触发
+  final Function onTap;
+
+  /// 输入内容变化时触发
+  final Function onChang;
+
+  /// 清除输入框内容时触发
+  final Function onClear;
+
   @override
-  _YKSearchBarState createState() => _YKSearchBarState();
+  _SearchBarState createState() => _SearchBarState();
 }
 
-class _YKSearchBarState extends State<YKSearchBar> {
+class _SearchBarState extends State<SearchBar> {
   @override
   void initState() {
     super.initState();
@@ -80,7 +96,7 @@ class _YKSearchBarState extends State<YKSearchBar> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 22.w),
               child: YKSreachInput(
-                hintText: '药品名、通用名、生产厂家',
+                hintText: '搜索内容',
                 isDelay: widget.isDelay,
                 fillColor: widget.inputFillColor,
                 durationTime: widget.durationTime,

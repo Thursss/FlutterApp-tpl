@@ -5,38 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:FlutterAppTpl/components/iconfont/icon_font.dart';
 
-/*
- * 输入框组件
- * @param {num} height 输入框高度
- * @param {String} hintText 提升内容
- * @param {Color} fillColor 背景颜色
- * @param {bool} isDelay 是否开启节流
- * @param {int} durationTime 节流时间，默认200毫秒
- * @param {Function} onTap 点击组件触发
- * @param {Function} onChang 输入内容变化时触发
- * @param {Function} onClear 清除输入框内容时触发
- */
-
+/// 输入框组件
 class YKSreachInput extends StatefulWidget {
-  final num width;
-  final num height;
-  final String hintText;
-  final TextStyle hintStyle;
-  final Color fillColor;
-  final bool isDelay;
-  final int durationTime;
-
-  /// 输入框控制器
-  // final TextEditingController controller;
-
-  /// 焦点控制器
-  final FocusNode focusNode;
-  final Function onTap;
-  final Function onChang;
-  final Function onClear;
-
   /// 输入框组件
-  ///
   YKSreachInput({
     Key key,
     this.hintText = '搜索',
@@ -53,14 +24,54 @@ class YKSreachInput extends StatefulWidget {
     this.onClear,
   }) : super(key: key);
 
+  /// 焦点控制器
+  final FocusNode focusNode;
+
+  /// 输入框宽度
+  final double width;
+
+  /// 输入框高度
+  final double height;
+
+  /// 提示文本
+  final String hintText;
+
+  /// 提示文本样式
+  final TextStyle hintStyle;
+
+  /// 背景颜色
+  final Color fillColor;
+
+  /// 是否启用节流
+  final bool isDelay;
+
+  /// 节流时间，默认200毫秒
+  final int durationTime;
+
+  /// 输入框控制器
+  // final TextEditingController controller;
+
+  /// 点击组件触发
+  final Function onTap;
+
+  /// 输入内容变化时触发
+  final Function onChang;
+
+  /// 清除输入框内容时触发
+  final Function onClear;
+
   @override
   _YKSreachInputState createState() => _YKSreachInputState();
 }
 
 class _YKSreachInputState extends State<YKSreachInput> {
-  ///
+  /// 输入控制器
   TextEditingController _controller = TextEditingController();
+
+  /// 搜索值
   String searchVal = '';
+
+  ///
   Timer timer;
 
   @override

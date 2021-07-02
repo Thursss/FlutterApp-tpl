@@ -9,7 +9,7 @@ import 'package:FlutterAppTpl/components/iconfont/icon_font.dart';
 class YKSreachInput extends StatefulWidget {
   /// 输入框组件
   YKSreachInput({
-    Key key,
+    Key? key,
     this.hintText = '搜索',
     this.hintStyle,
     this.fillColor = Colors.white,
@@ -25,19 +25,19 @@ class YKSreachInput extends StatefulWidget {
   }) : super(key: key);
 
   /// 焦点控制器
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   /// 输入框宽度
-  final double width;
+  final double? width;
 
   /// 输入框高度
-  final double height;
+  final double? height;
 
   /// 提示文本
   final String hintText;
 
   /// 提示文本样式
-  final TextStyle hintStyle;
+  final TextStyle? hintStyle;
 
   /// 背景颜色
   final Color fillColor;
@@ -52,13 +52,13 @@ class YKSreachInput extends StatefulWidget {
   // final TextEditingController controller;
 
   /// 点击组件触发
-  final Function onTap;
+  final Function? onTap;
 
   /// 输入内容变化时触发
-  final Function onChang;
+  final Function? onChang;
 
   /// 清除输入框内容时触发
-  final Function onClear;
+  final Function? onClear;
 
   @override
   _YKSreachInputState createState() => _YKSreachInputState();
@@ -72,7 +72,7 @@ class _YKSreachInputState extends State<YKSreachInput> {
   String searchVal = '';
 
   ///
-  Timer timer;
+  late Timer timer;
 
   @override
   void dispose() {
@@ -131,7 +131,7 @@ class _YKSreachInputState extends State<YKSreachInput> {
                     color: Color.fromRGBO(66, 66, 66, 1),
                   ),
                   onChanged: (val) {
-                    val = val?.trim();
+                    val = val.trim();
                     setState(() {
                       // 当第一次输入时立即执行，然后才节流
                       if (widget.isDelay == true && searchVal != '') {
@@ -139,18 +139,18 @@ class _YKSreachInputState extends State<YKSreachInput> {
                         timer = Timer(
                             Duration(milliseconds: widget.durationTime), () {
                           searchVal = val;
-                          if (widget.onChang != null) widget.onChang(val);
+                          if (widget.onChang != null) widget.onChang!(val);
                         });
                       } else {
                         searchVal = val;
-                        if (widget.onChang != null) widget.onChang(val);
+                        if (widget.onChang != null) widget.onChang!(val);
                       }
                     });
                   },
                 ),
               ),
             ),
-            if (searchVal?.isNotEmpty)
+            if (searchVal.isNotEmpty)
               InkWell(
                 child: IconFont(
                   IconNames.qingchu,
@@ -162,15 +162,15 @@ class _YKSreachInputState extends State<YKSreachInput> {
                   _controller.clear();
                   setState(() {
                     searchVal = '';
-                    if (widget.onClear != null) widget.onClear();
-                    if (widget.onChang != null) widget.onChang('');
+                    if (widget.onClear != null) widget.onClear!();
+                    if (widget.onChang != null) widget.onChang!('');
                   });
                 },
               ),
           ],
         ),
         onTap: () {
-          if (widget.onTap != null) widget.onTap();
+          if (widget.onTap != null) widget.onTap!();
         },
       ),
     );

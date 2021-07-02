@@ -7,13 +7,13 @@ class TouchPointModel {
   TouchPointModel({this.i, this.offset, this.type});
 
   /// 当前第几个子组件在顶部
-  int i;
+  int? i;
 
   /// 偏移量
-  num offset;
+  double? offset;
 
   // 事件类型
-  PointerType type;
+  PointerType? type;
 }
 
 /// 用于定义返回给使用者的数据规范接口
@@ -21,28 +21,28 @@ class TouchBindingModel {
   TouchBindingModel({this.childPoints, this.childSizes, this.containerSize});
 
   /// 所有的子组件的尺寸信息
-  List childSizes;
+  List? childSizes;
 
   /// 所有的子组件的位置信息
-  List childPoints;
+  List? childPoints;
 
   /// 父容器的尺寸信息
-  Size containerSize;
+  Size? containerSize;
 }
 
 class TouchListenerView extends StatefulWidget {
   ///
-  TouchListenerView({this.children, this.onMove, this.onBinding, Key key})
+  TouchListenerView({this.children, this.onMove, this.onBinding, Key? key})
       : super(key: key);
 
   /// 子控件
-  final List<Widget> children;
+  final List<Widget>? children;
 
   /// 初始化完成回调
-  final Function onBinding;
+  final Function? onBinding;
 
   /// 移动回调
-  final Function onMove;
+  final Function? onMove;
 
   @override
   TouchListenerViewState createState() => TouchListenerViewState();
@@ -50,7 +50,7 @@ class TouchListenerView extends StatefulWidget {
 
 class TouchListenerViewState extends State<TouchListenerView> {
   ///
-  WidgetsBinding widgetsBinding;
+  late WidgetsBinding widgetsBinding;
 
   /// 所有的子组件的尺寸信息
   List<Size> childSizes = [];
@@ -59,7 +59,7 @@ class TouchListenerViewState extends State<TouchListenerView> {
   List<num> childPoints = [];
 
   /// 容器的尺寸信息
-  Size containerSize;
+  Size? containerSize;
 
   /// 触摸事件处理
   /// [dy]
@@ -71,7 +71,7 @@ class TouchListenerViewState extends State<TouchListenerView> {
     // double dy = event.localPosition.dy;
 
     /// 容器高度
-    double containerHeight = containerSize.height;
+    double containerHeight = containerSize!.height;
 
     // 根据位置信息判断当前位于第几个子组件中
     for (var i = 1; i < childPoints.length; i++) {
@@ -87,7 +87,7 @@ class TouchListenerViewState extends State<TouchListenerView> {
 
     // 执行回调
     if (widget.onMove != null)
-      widget.onMove(TouchPointModel(i: index, type: type, offset: dy));
+      widget.onMove!(TouchPointModel(i: index, type: type, offset: dy));
   }
 
   /// 提供给外部来更新组件状态
@@ -99,7 +99,7 @@ class TouchListenerViewState extends State<TouchListenerView> {
   void initState() {
     super.initState();
 
-    widgetsBinding = WidgetsBinding.instance;
+    widgetsBinding = WidgetsBinding.instance!;
     widgetsBinding.addPostFrameCallback((callback) {
       // 获取父容器尺寸
       containerSize = context.size;
@@ -108,19 +108,21 @@ class TouchListenerViewState extends State<TouchListenerView> {
       /// 计算所有子组件位置并保存至 [childPoints] 内
       num heightSum = 0;
 
-      widget.children.forEach((item) {
-        GlobalKey key = item.key;
+      widget.children!.forEach((item) {
+        GlobalKey key = (item.key as GlobalKey);
         // 获取尺寸信息
-        Size size = key.currentContext.size;
-        childSizes.add(size);
+        Size? size = key.currentContext?.size;
+        if (size != null) {
+          childSizes.add(size);
 
-        // 计算高度
-        heightSum += size.height;
-        childPoints.add(heightSum);
+          // 计算高度
+          heightSum += size.height;
+          childPoints.add(heightSum);
+        }
       });
 
       if (widget.onBinding != null)
-        widget.onBinding(TouchBindingModel(
+        widget.onBinding!(TouchBindingModel(
           childPoints: childPoints,
           childSizes: childSizes,
           containerSize: containerSize,
@@ -132,7 +134,7 @@ class TouchListenerViewState extends State<TouchListenerView> {
   Widget build(BuildContext context) {
     return Listener(
       child: Column(
-        children: widget.children,
+        children: widget.children!,
       ),
 
       // 触摸

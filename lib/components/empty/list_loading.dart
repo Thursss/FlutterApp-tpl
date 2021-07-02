@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListLoading extends StatelessWidget {
   /// 商品列表加载时的骨架图
-  ListLoading({Key key, this.count = 3}) : super(key: key);
+  ListLoading({Key? key, this.count = 3}) : super(key: key);
   final int count;
 
   @override

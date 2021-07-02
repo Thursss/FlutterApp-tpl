@@ -14,41 +14,53 @@ import 'package:FlutterAppTpl/components/empty/common_error.dart';
  * @param {Widget} loadingWidget loading状态
  */
 class FutureBuild extends StatefulWidget {
-  final Future future;
-  final Function onRefresh;
-  final Function builder;
-  final Function errorBuilder;
-  final bool loading;
-  final Widget loadingWidget;
-
   /// 需要异步数据来渲染视图时使用，
   /// 加载成功时会调用builder并返回异步数据，
   /// 加载失败时会调用[errorBuilder]并返回失败信息，
   /// [loading]是否显示loadingWidget，
   /// [loadingWidget]加载时显示的组件，默认为loading图标，
-  FutureBuild({
+  FutureBuild(
+    {
     this.future,
-    this.onRefresh,
     this.builder,
+    this.onRefresh,
     this.errorBuilder,
     this.loading = true,
     this.loadingWidget,
-    Key key,
+    Key? key,
   }) : super(key: key);
+
+  /// future
+  final Future? future;
+
+  /// 请求成功时的构建函数
+  final Function? builder;
+
+  /// 请求失败时的构建函数
+  final Function? errorBuilder;
+
+  /// 重新加载
+  final Function? onRefresh;
+
+  /// 是否显示loading状态
+  final bool loading;
+
+  /// 自定义loading状态
+  final Widget? loadingWidget;
 
   @override
   _FutureBuildState createState() => _FutureBuildState();
 }
 
 class _FutureBuildState extends State<FutureBuild> {
-  Future future;
-  Object _activeCallbackIdentity;
-  AsyncSnapshot _snapshot;
+  late Future future;
+  late AsyncSnapshot _snapshot;
+  Object? _activeCallbackIdentity;
 
   @override
   void initState() {
     super.initState();
-    future = widget.future;
+    future = widget.future!;
     _snapshot = AsyncSnapshot.withData(ConnectionState.none, null);
     _subscribe();
   }
@@ -57,7 +69,7 @@ class _FutureBuildState extends State<FutureBuild> {
   void didUpdateWidget(FutureBuild oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.future != widget.future) {
-      future = widget.future;
+      future = widget.future!;
       if (_activeCallbackIdentity != null) {
         _unsubscribe();
         _snapshot = _snapshot.inState(ConnectionState.none);
@@ -119,17 +131,19 @@ class _FutureBuildState extends State<FutureBuild> {
           // );
           case ConnectionState.done:
             // 加载完成
-            if (_snapshot.hasError)
+            if (_snapshot.hasError) {
               return (widget.errorBuilder != null)
-                  ? widget.errorBuilder(_snapshot.error)
+                  ? widget.errorBuilder!(_snapshot.error)
                   : CommonErrorWeigth(
                       error: _snapshot.error,
                       onRefresh: widget.onRefresh,
                     );
-            if (_snapshot.hasData)
-              return widget.builder((_snapshot.data is Response)
+            }
+            if (_snapshot.hasData) {
+              return widget.builder!((_snapshot.data is Response)
                   ? json.decode(_snapshot.data.toString())
                   : _snapshot.data);
+            }
             return SizedBox();
           default:
             return SizedBox();

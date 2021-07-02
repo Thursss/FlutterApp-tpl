@@ -5,15 +5,12 @@ import './categories.dart';
 
 class RouterConfig {
   factory RouterConfig() => _getInstance();
-  static RouterConfig get instance => _getInstance();
-  static RouterConfig _instance;
+  static RouterConfig? get instance => _getInstance();
+  static RouterConfig? _instance;
   // 初始化
   RouterConfig._internal() {}
   static RouterConfig _getInstance() {
-    if (_instance == null) {
-      _instance = new RouterConfig._internal();
-    }
-    return _instance;
+    return _instance ?? RouterConfig._internal();
   }
 
   /// 未知路由
@@ -28,12 +25,12 @@ class RouterConfig {
   ];
 
   /// 路由入栈事件
-  static routerPush(Routing routing) {
+  static routerPush(Routing? routing) {
     // print(routing.current);
   }
 
   /// 路由出栈事件
-  static routerBack(Routing routing) {
+  static routerBack(Routing? routing) {
     // print(routing.previous);
   }
 }

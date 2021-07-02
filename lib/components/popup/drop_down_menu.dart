@@ -8,7 +8,6 @@ enum JustifyType { center, left, right }
 class DropDownMenu extends StatelessWidget {
   /// 下拉框，
   DropDownMenu({
-    Key key,
     this.child,
     this.action,
     this.height = 200,
@@ -17,38 +16,39 @@ class DropDownMenu extends StatelessWidget {
     this.justify = JustifyType.left,
     this.onDropCallBack,
     this.dropMenu,
+    Key? key,
   }) : super(key: key);
 
   ///
-  final Widget child;
+  final Widget? child;
 
   /// 触发下拉的组件，当为null时由child触发
-  final Widget action;
+  final Widget? action;
 
   /// 下拉框的内容
-  final Widget dropMenu;
+  final Widget? dropMenu;
 
   /// 下拉框高度
   final double height;
 
   /// 下拉框宽度
-  final double width;
+  final double? width;
 
   /// 背景颜色
-  final Color backgroudColor;
+  final Color? backgroudColor;
 
   /// 对齐方式
   final JustifyType justify;
 
   /// 下拉框展开，收起时的回调 true为展开，false为收起
-  final Function onDropCallBack;
+  final Function? onDropCallBack;
 
   /// GlobalKey
   GlobalKey _globalKey = GlobalKey();
 
   /// 调用Popup.show方法，展开下拉框
   Future dropDowm(BuildContext _, Rect box) {
-    if (onDropCallBack != null) onDropCallBack(true);
+    if (onDropCallBack != null) onDropCallBack!(true);
     return Popup.show(
       _,
       top: box.bottom,
@@ -64,7 +64,7 @@ class DropDownMenu extends StatelessWidget {
         );
       },
       onClose: () {
-        if (onDropCallBack != null) onDropCallBack(false);
+        if (onDropCallBack != null) onDropCallBack!(false);
       },
     );
   }
@@ -81,8 +81,8 @@ class DropDownMenu extends StatelessWidget {
                   child: child,
                   onTap: () {
                     if (action == null) {
-                      RenderBox renderBox =
-                          _globalKey.currentContext.findRenderObject();
+                      RenderBox renderBox = (_globalKey.currentContext
+                          ?.findRenderObject() as RenderBox);
                       Rect box =
                           renderBox.localToGlobal(Offset.zero) & renderBox.size;
                       dropDowm(context, box);
@@ -94,7 +94,8 @@ class DropDownMenu extends StatelessWidget {
         InkWell(
           child: action ?? Container(),
           onTap: () {
-            RenderBox renderBox = _globalKey.currentContext.findRenderObject();
+            RenderBox renderBox =
+                (_globalKey.currentContext?.findRenderObject() as RenderBox);
             Rect box = renderBox.localToGlobal(Offset.zero) & renderBox.size;
             dropDowm(context, box).then((res) {});
           },

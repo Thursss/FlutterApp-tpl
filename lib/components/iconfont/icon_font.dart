@@ -25,9 +25,9 @@ extension parseString on IconNames {
 /// IconFont('xxx');
 /// ```
 class IconFont extends StatelessWidget {
-  IconNames name;
-  final String color;
-  final List<String> colors;
+  IconNames? name;
+  final String? color;
+  final List<String>? colors;
   final double size;
 
   IconFont(dynamic iconName, { this.size = 18, this.color, this.colors }) {
@@ -179,7 +179,7 @@ class IconFont extends StatelessWidget {
     return iconName;
   }
 
-  static String getColor(int arrayIndex, String color, List<String> colors, String defaultColor) {
+  static String getColor(int arrayIndex, String? color, List<String>? colors, String defaultColor) {
     if (color != null && color.isNotEmpty) {
       return color;
     }
@@ -195,7 +195,7 @@ class IconFont extends StatelessWidget {
   Widget build(BuildContext context) {
     String svgXml;
 
-    switch (this.name) {
+    switch (this.name!) {
       case IconNames.jiantou_up:
         svgXml = '''
           <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">

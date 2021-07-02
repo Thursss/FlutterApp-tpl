@@ -52,8 +52,10 @@ class MyApp extends StatelessWidget {
             ...RouterConfig.routers.map((route) =>
                 GetPage(name: route['path'], page: () => route['page']))
           ],
-          routingCallback: (routing) {
-            if (routing.isBack) {
+          routingCallback: (Routing? routing) {
+            if (routing == null) return;
+            bool? isBack = routing.isBack;
+            if (isBack != null && isBack) {
               // 路由出栈
               RouterConfig.routerBack(routing);
             } else {

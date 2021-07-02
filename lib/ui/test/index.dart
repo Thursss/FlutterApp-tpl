@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:FlutterAppTpl/models/test/test.dart';
 
 class TestPage extends StatefulWidget {
-  TestPage({Key key, this.title}) : super(key: key);
+  TestPage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _TestPageState createState() => _TestPageState();
 }
 
 class _TestPageState extends State<TestPage> {
-  String val = '';
-  Test testModel;
+  String? val = '';
+  Test? testModel;
   void _incrementCounter() {
     setState(() {
-      val = testModel.data.friends[0].email;
+      val = testModel?.data.friends[0].email;
     });
   }
 
@@ -78,7 +78,7 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title ?? ''),
       ),
       body: Center(
         child: Column(

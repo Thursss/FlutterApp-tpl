@@ -13,7 +13,7 @@ class RouterUtil {
 
   /// 路由跳转，
   /// [arguments]路由参数
-  Future push(
+  Future? push(
     page, {
     dynamic arguments,
   }) {
@@ -35,7 +35,7 @@ class RouterUtil {
 
   /// 替换当前路由，
   /// [arguments]路由参数
-  Future repace(
+  Future? repace(
     page, {
     dynamic arguments,
   }) {
@@ -47,7 +47,7 @@ class RouterUtil {
 
   /// 替换全部路由，
   /// [arguments]路由参数
-  Future repaceAll(
+  Future? repaceAll(
     page, {
     dynamic arguments,
   }) {

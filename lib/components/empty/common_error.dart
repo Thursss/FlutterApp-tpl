@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CommonErrorWeigth extends StatelessWidget {
   /// 异步加载失败时的表现
-  CommonErrorWeigth({this.onRefresh, this.error, this.imageUrl, Key key})
+  CommonErrorWeigth({this.onRefresh, this.error = '', this.imageUrl, Key? key})
       : super(key: key);
-  final Function onRefresh;
-  final error;
-  final String imageUrl;
+  final dynamic error;
+  final String? imageUrl;
+  final Function? onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +23,17 @@ class CommonErrorWeigth extends StatelessWidget {
             //   width: 300.w,
             // ),
             Text(
-              '${error}',
+              error,
               textAlign: TextAlign.center,
               style: TextStyle(),
             ),
             if (onRefresh != null)
               ElevatedButton(
                 child: Text('重新加载'),
-                onPressed: onRefresh,
-              )
+                onPressed: () {
+                  onRefresh!();
+                },
+              ),
           ],
         ),
       ),

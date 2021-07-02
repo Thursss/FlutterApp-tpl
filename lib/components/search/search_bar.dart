@@ -8,12 +8,12 @@ import './search_input.dart';
 class SearchBar extends StatefulWidget {
   /// app顶部搜索条
   const SearchBar({
-    Key key,
+    Key? key,
     this.hintText,
     this.color,
-    this.inputFillColor,
-    this.isDelay,
-    this.durationTime,
+    this.inputFillColor = Colors.white,
+    this.isDelay = true,
+    this.durationTime = 200,
     this.leading,
     this.actions,
     this.onChang,
@@ -22,10 +22,10 @@ class SearchBar extends StatefulWidget {
   }) : super(key: key);
 
   /// 提示文本
-  final String hintText;
+  final String? hintText;
 
   /// 布局样式
-  final Color color;
+  final Color? color;
 
   /// 输入框布局颜色
   final Color inputFillColor;
@@ -37,19 +37,19 @@ class SearchBar extends StatefulWidget {
   final int durationTime;
 
   /// 左边组件
-  final Widget leading;
+  final Widget? leading;
 
   /// 右边组件
-  final List<Widget> actions;
+  final List<Widget>? actions;
 
   /// 点击组件触发
-  final Function onTap;
+  final Function? onTap;
 
   /// 输入内容变化时触发
-  final Function onChang;
+  final Function? onChang;
 
   /// 清除输入框内容时触发
-  final Function onClear;
+  final Function? onClear;
 
   @override
   _SearchBarState createState() => _SearchBarState();

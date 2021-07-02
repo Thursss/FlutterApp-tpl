@@ -16,13 +16,14 @@
     fix:      修复bug
 
   * 特殊type
-  > docs:     只改动了文档相关的内容
-    style:    不影响代码含义的改动，例如去掉空格、改变缩进、增删分号
-    build:    构造工具的或者外部依赖的改动，例如webpack，npm
-    refactor: 代码重构时使用
-    revert:   执行git revert打印的message
-    file:     文件名称或者路径改动
+  > docs:      只改动了文档相关的内容
+    style:     不影响代码含义的改动，例如去掉空格、改变缩进、增删分号
+    build:     构造工具的或者外部依赖的改动，例如webpack，npm
+    refactor:  代码重构时使用
+    revert:    执行git revert打印的message
+    file:      文件名称或者路径改动
     component: 组件变动时使用
+    lint:      代码规范变动
 
   * 暂不使用type
   > test:     添加测试或者修改现有测试

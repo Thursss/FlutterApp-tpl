@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// 用于定义返回给使用者的数据规范接口
 class ScrollPointModel {
   ScrollPointModel({this.i, this.offset});
 
   /// 当前第几个子组件在顶部
-  int i;
+  int? i;
 
   /// 偏移量
-  num offset;
+  num? offset;
 }
 
 /// 用于定义返回给使用者的数据规范接口
@@ -16,32 +17,32 @@ class ScrollBindingModel {
   ScrollBindingModel({this.childPoints, this.childSizes, this.containerSize});
 
   /// 所有的子组件的尺寸信息
-  List childSizes;
+  List? childSizes;
 
   /// 所有的子组件的位置信息
-  List childPoints;
+  List? childPoints;
 
   /// 父容器的尺寸信息
-  Size containerSize;
+  Size? containerSize;
 }
 
 class ScrollListenerView extends StatefulWidget {
   /// 滚动监听处理
   ScrollListenerView(
-      {this.controller, this.children, this.onBinding, this.onScroll, Key key})
+      {this.controller, this.children, this.onBinding, this.onScroll, Key? key})
       : super(key: key);
 
   /// 滚动控制器
-  final ScrollController controller;
+  final ScrollController? controller;
 
   /// 子控件
-  final List<Widget> children;
+  final List<Widget>? children;
 
   /// 初始化完成回调
-  final Function onBinding;
+  final Function? onBinding;
 
   /// 滚动回调
-  final Function onScroll;
+  final Function? onScroll;
 
   @override
   ScrolLlistenerViewState createState() => ScrolLlistenerViewState();
@@ -49,7 +50,7 @@ class ScrollListenerView extends StatefulWidget {
 
 class ScrolLlistenerViewState extends State<ScrollListenerView> {
   ///
-  WidgetsBinding widgetsBinding;
+  late WidgetsBinding widgetsBinding;
 
   /// 所有的子组件的尺寸信息
   List<Size> childSizes = [];
@@ -58,7 +59,7 @@ class ScrolLlistenerViewState extends State<ScrollListenerView> {
   List<num> childPoints = [];
 
   /// 容器的尺寸信息
-  Size containerSize;
+  Size? containerSize;
 
   /// 列表滚动监听
   void scrollListener() {
@@ -66,7 +67,7 @@ class ScrolLlistenerViewState extends State<ScrollListenerView> {
     int index = 0;
 
     /// 在组件上y轴移动的位置
-    double dy = widget.controller.offset;
+    double dy = widget.controller!.offset;
 
     // 根据位置信息当前位于第几个子组件中
     for (var i = 1; i < childPoints.length; i++) {
@@ -78,7 +79,7 @@ class ScrolLlistenerViewState extends State<ScrollListenerView> {
 
     // 执行回调
     if (widget.onScroll != null)
-      widget.onScroll(ScrollPointModel(i: index, offset: dy));
+      widget.onScroll!(ScrollPointModel(i: index, offset: dy));
   }
 
   /// 提供给外部来更新组件状态
@@ -93,24 +94,25 @@ class ScrolLlistenerViewState extends State<ScrollListenerView> {
 
     /// 获取所有子组件尺寸并保存至 [childSizes] 内
     /// 计算所有子组件位置并保存至 [childPoints] 内
-    num heightSum = 0.0;
+    double heightSum = 0.0;
+    widget.children!.forEach((item) {
+      GlobalKey key = (item.key as GlobalKey);
+      Size? size = key.currentContext?.size;
+      if (size != null) {
+        // 获取尺寸信息
+        childSizes.add(size);
 
-    widget.children.forEach((item) {
-      GlobalKey key = item.key;
-      // 获取尺寸信息
-      Size size = key.currentContext?.size;
-      childSizes.add(size);
-
-      // 计算高度
-      childPoints.add(heightSum);
-      heightSum += size.height;
+        // 计算高度
+        childPoints.add(heightSum);
+        heightSum += (size.height);
+      }
     });
 
     // 获取父容器尺寸
-    containerSize = Size(context.size.width, heightSum);
+    containerSize = Size(context.size?.width ?? 0.0, heightSum);
 
     if (widget.onBinding != null)
-      widget.onBinding(ScrollBindingModel(
+      widget.onBinding!(ScrollBindingModel(
         childPoints: childPoints,
         childSizes: childSizes,
         containerSize: containerSize,
@@ -121,9 +123,9 @@ class ScrolLlistenerViewState extends State<ScrollListenerView> {
   void initState() {
     super.initState();
     // 添加滚动监听
-    widget.controller.addListener(scrollListener);
+    widget.controller!.addListener(scrollListener);
 
-    widgetsBinding = WidgetsBinding.instance;
+    widgetsBinding = WidgetsBinding.instance!;
     widgetsBinding.addPostFrameCallback((timeStamp) {
       onBinding();
     });
@@ -140,7 +142,7 @@ class ScrolLlistenerViewState extends State<ScrollListenerView> {
     return SingleChildScrollView(
       controller: widget.controller,
       child: Column(
-        children: widget.children,
+        children: widget.children!,
       ),
     );
   }

@@ -5,33 +5,33 @@ class YKStripeBg extends StatelessWidget {
   ///  条纹背景
   YKStripeBg(
     this.stripeColorList, {
+    this.child,
     this.width,
     this.height,
     this.alignment,
-    this.child,
     this.begin = Alignment.topLeft,
     this.end = Alignment.bottomRight,
     this.stripeCount = 5,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   /// 子组件
-  final Widget child;
+  final Widget? child;
 
   ///
-  final num width;
+  final double? width;
 
   ///
-  final num height;
+  final double? height;
 
   ///
-  final Alignment alignment;
+  final Alignment? alignment;
 
   /// 开始方向
-  final Alignment begin;
+  final Alignment? begin;
 
   /// 结束方向
-  final Alignment end;
+  final Alignment? end;
 
   /// 条纹背景数组
   final List<Color> stripeColorList;
@@ -58,13 +58,13 @@ class YKStripeBg extends StatelessWidget {
     }
 
     for (int i = 0; i < stripeCount; i++) {
-      linearGradientList['colors'].addAll(itemStripe);
+      linearGradientList['colors']?.addAll(itemStripe);
     }
 
     for (int i = 0; i < stopsLength; i++) {
       double itemVal = double.parse((i * factor).toStringAsFixed(3)) * 2;
       if (itemVal == 0.0) continue;
-      linearGradientList['stops'].addAll([itemVal, itemVal + 0.001]);
+      linearGradientList['stops']?.addAll([itemVal, itemVal + 0.001]);
     }
 
     return linearGradientList;
@@ -79,11 +79,11 @@ class YKStripeBg extends StatelessWidget {
       alignment: alignment,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: begin,
-          end: end,
+          begin: begin ?? Alignment.topLeft,
+          end: end ?? Alignment.bottomRight,
           tileMode: TileMode.repeated,
-          colors: [...linearGradientList['colors']],
-          stops: [0, ...linearGradientList['stops'], 1],
+          colors: [...linearGradientList['colors']!],
+          stops: [0, ...linearGradientList['stops']!, 1],
         ),
       ),
       child: child ?? Container(),
